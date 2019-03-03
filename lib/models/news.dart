@@ -10,7 +10,7 @@ class News {
   String key;
   String image;
   String text;
-  DateTime published;
+  String published;
 
   News(this.image, this.text, this.published);
 

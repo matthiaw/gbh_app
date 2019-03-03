@@ -27,19 +27,38 @@ class _NewsScreenState extends State<NewsScreen> {
 
     _newsList = new List();
 
-//    print(_database.reference().root());
-
     _newsQuery = _database
         .reference()
-        .child("news");
+        .child('news')
+        .orderByChild('published')
+        .limitToFirst(10);
 
     _newsQuery.onChildAdded.listen(_onEntryAdded);
   }
 
   _onEntryAdded(Event event) {
     setState(() {
-      _newsList.add(News.fromSnapshot(event.snapshot));
+      News n = News.fromSnapshot(event.snapshot);
+      print(n.text);
+      _newsList.add(n);
     });
+  }
+
+  Widget _buildNewsItem(BuildContext context, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            children: <Widget>[
+              convert(_newsList[index].image),
+              Text(_newsList[index].text, style: TextStyle(color: Colors.black))
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -56,16 +75,7 @@ class _NewsScreenState extends State<NewsScreen> {
           child: new ListView.builder(
           shrinkWrap: true,
           itemCount: _newsList.length,
-          itemBuilder: (BuildContext context, int index) {
-            String id = _newsList[index].key;
-            String text = _newsList[index].text;
-            String bimg = _newsList[index].image;
-            Image img = convert(bimg);
-            child: ListTile(
-              leading: img,
-              title: new Text(text),
-            );
-          }
+          itemBuilder: _buildNewsItem,
           ),
           ),
 
@@ -84,18 +94,18 @@ class _NewsScreenState extends State<NewsScreen> {
   }
 
   Image convert(String base64image) {
-    const BASE64 = const Base64Codec();
-    Uint8List bytes = BASE64.decode(base64image);
-    return new Image.memory(bytes);
+    try {
+       const BASE64 = const Base64Codec();
+       Uint8List bytes = BASE64.decode(base64image);
+       return new Image.memory(bytes);
+    } on FormatException catch(e) {
+       return Image.asset('assets/logo.png');
+    }
   }
 
 }
 
 class NewsScreen extends StatefulWidget {
-
-
   @override
   State<StatefulWidget> createState() => new _NewsScreenState();
-
-
 }
