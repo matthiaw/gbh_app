@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "127695001611",
+    "firebase_url": "https://gbhapp-2f74c.firebaseio.com",
+    "project_id": "gbhapp-2f74c",
+    "storage_bucket": "gbhapp-2f74c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127695001611:android:589af138b6dddcac",
+        "android_client_info": {
+          "package_name": "openskies.org.gbh_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127695001611-v8bp2as26u9a60pdupkk8k9g6el89420.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "openskies.org.gbh_app",
+            "certificate_hash": "38bff45327b2d478cb2825c927b8eedeb74228b9"
+          }
+        },
+        {
+          "client_id": "127695001611-7340ligjmptid7nv77d2ugo7fokplkak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy_200yG2sX-yfLCTEs0n8ZyzTdCW3AIs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127695001611-7340ligjmptid7nv77d2ugo7fokplkak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
