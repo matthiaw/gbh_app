@@ -39,7 +39,7 @@ class _NewsScreenState extends State<NewsScreen> {
   _onEntryAdded(Event event) {
     setState(() {
       News n = News.fromSnapshot(event.snapshot);
-      print(n.text);
+      //print(n.text);
       _newsList.add(n);
     });
   }
@@ -52,8 +52,41 @@ class _NewsScreenState extends State<NewsScreen> {
           padding: const EdgeInsets.all(5.0),
           child: Column(
             children: <Widget>[
-              convert(_newsList[index].image),
-              Text(_newsList[index].text, style: TextStyle(color: Colors.black))
+            convert(_newsList[index].image),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  //color: Colors.grey,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5.0),
+                    child: Text(
+                        _newsList[index].title,
+                        style: TextStyle( color: Theme.of(context).accentColor, fontSize: 18, fontWeight: FontWeight.bold)
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  //color: Colors.grey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      _newsList[index].text,
+                      style: TextStyle(color: Colors.black)
+                    ),
+                  ),
+                ),
+              ),
+            ),
             ],
           ),
         ),
@@ -93,13 +126,14 @@ class _NewsScreenState extends State<NewsScreen> {
     }
   }
 
-  Image convert(String base64image) {
+  Widget convert(String base64image) {
     try {
        const BASE64 = const Base64Codec();
        Uint8List bytes = BASE64.decode(base64image);
-       return new Image.memory(bytes);
+       Image i = new Image.memory(bytes, fit: BoxFit.scaleDown, width: 150, height: 150);
+       return i;
     } on FormatException catch(e) {
-       return Image.asset('assets/logo.png');
+       return Image.asset('assets/logo.png', fit: BoxFit.scaleDown, width: 150, height: 150, colorBlendMode: BlendMode.saturation, color: Colors.white);
     }
   }
 

@@ -10,6 +10,7 @@ class News {
   String key;
   String image;
   String text;
+  String title;
   String published;
 
   News(this.image, this.text, this.published);
@@ -17,6 +18,7 @@ class News {
   News.fromSnapshot(DataSnapshot snapshot) :
         key = snapshot.key,
         text = snapshot.value["text"],
+        title = snapshot.value["title"],
         image = snapshot.value["image"],
         published = snapshot.value["published"];
 
@@ -24,6 +26,7 @@ class News {
     return {
       "image": image,
       "text": text,
+      "title": title,
       "published": published,
     };
   }
