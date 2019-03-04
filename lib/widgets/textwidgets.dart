@@ -1,5 +1,10 @@
+// Open Skies App (Gebetshaus Freiburg)
+//
+// Copyright (c) 2019, Matthias Wegner
+//
+// All rights reserved. Use of this source code is governed by GNU General Public License v3.0
+
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 Widget buildAlignedText(BuildContext context, String text) {
   return Align(

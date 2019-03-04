@@ -1,8 +1,12 @@
+// Open Skies App (Gebetshaus Freiburg)
+//
+// Copyright (c) 2019, Matthias Wegner
+//
+// All rights reserved. Use of this source code is governed by GNU General Public License v3.0
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:typed_data';
-
-
 
 Image convertBase64toImage(String base64image, double maxSize) {
   const BASE64 = const Base64Codec();
