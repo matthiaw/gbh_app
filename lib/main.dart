@@ -10,7 +10,9 @@ import 'package:gbh_app/screens/root.dart';
 import 'package:gbh_app/screens/deeper.dart';
 import 'package:gbh_app/services/authentication.dart';
 import 'package:gbh_app/screens/soundcloud.dart';
+import 'package:gbh_app/screens/youtube.dart';
 import 'package:gbh_app/models/theme.dart';
+import 'package:gbh_app/screens/products.dart';
 
 /// Main if the application
 void main() => runApp(OpenSkiesApp());
@@ -40,6 +42,10 @@ class OpenSkiesApp extends StatelessWidget {
         '/deeper': (context) => DeeperScreen(),
         // When we navigate to the "/soundcloud" build SoundcloudScreen Widget
         '/soundcloud': (context) => SoundcloudScreen(),
+        // When we navigate to the "/youtube" build YoutTubeScreen Widget
+        '/youtube': (context) => YouTubeScreen(),
+        // When we navigate to the "/products" build ProductScreen Widget
+        '/products': (context) => ProductScreen(),
       },
     );
   }

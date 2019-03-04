@@ -7,20 +7,24 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'dart:convert';
-import 'dart:async';
-import 'dart:async' show Future;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:gbh_app/models/news.dart';
+import 'package:gbh_app/widgets/textwidgets.dart';
+import 'package:gbh_app/utils/objectutils.dart';
 
+/// News screen state class
 class _NewsScreenState extends State<NewsScreen> {
 
+  /// List of news
   List<News> _newsList;
 
+  // Query of firebase realtime database (not firestore)
   Query _newsQuery;
 
+  // Firebase database
   final FirebaseDatabase _database = FirebaseDatabase.instance;
 
+  //initial state of widget
   @override
   void initState() {
     super.initState();
@@ -36,14 +40,15 @@ class _NewsScreenState extends State<NewsScreen> {
     _newsQuery.onChildAdded.listen(_onEntryAdded);
   }
 
+  /// Create and add News-Class to list from json-data-snapshot
   _onEntryAdded(Event event) {
     setState(() {
       News n = News.fromSnapshot(event.snapshot);
-      //print(n.text);
       _newsList.add(n);
     });
   }
 
+  // Create news widget drom dataitem in list
   Widget _buildNewsItem(BuildContext context, int index) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
@@ -52,41 +57,9 @@ class _NewsScreenState extends State<NewsScreen> {
           padding: const EdgeInsets.all(5.0),
           child: Column(
             children: <Widget>[
-            convert(_newsList[index].image),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  //color: Colors.grey,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
-                    child: Text(
-                        _newsList[index].title,
-                        style: TextStyle( color: Theme.of(context).accentColor, fontSize: 18, fontWeight: FontWeight.bold)
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  //color: Colors.grey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text(
-                      _newsList[index].text,
-                      style: TextStyle(color: Colors.black)
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            convertImage(_newsList[index].image),
+            buildAlignedStyledText(context, _newsList[index].title, TextStyle( color: Theme.of(context).accentColor, fontSize: 18, fontWeight: FontWeight.bold)),
+            buildAlignedText(context, _newsList[index].text),
             ],
           ),
         ),
@@ -97,8 +70,6 @@ class _NewsScreenState extends State<NewsScreen> {
   @override
   Widget build(BuildContext context) {
 
-    print(_newsList.length);
-
     if (_newsList.length > 0) {
       return Scaffold(
         appBar: AppBar(
@@ -106,13 +77,12 @@ class _NewsScreenState extends State<NewsScreen> {
         ),
         body: Center(
           child: new ListView.builder(
-          shrinkWrap: true,
-          itemCount: _newsList.length,
-          itemBuilder: _buildNewsItem,
+            shrinkWrap: true,
+            itemCount: _newsList.length,
+            itemBuilder: _buildNewsItem,
           ),
-          ),
-
-    );
+        ),
+      );
     } else {
       return Scaffold(
         appBar: AppBar(
@@ -126,12 +96,10 @@ class _NewsScreenState extends State<NewsScreen> {
     }
   }
 
-  Widget convert(String base64image) {
+  // Convert image of news-article. If no image available set grey logo as default
+  Widget convertImage(String base64image) {
     try {
-       const BASE64 = const Base64Codec();
-       Uint8List bytes = BASE64.decode(base64image);
-       Image i = new Image.memory(bytes, fit: BoxFit.scaleDown, width: 150, height: 150);
-       return i;
+       return convertBase64toImage(base64image, 150.0);
     } on FormatException catch(e) {
        return Image.asset('assets/logo.png', fit: BoxFit.scaleDown, width: 150, height: 150, colorBlendMode: BlendMode.saturation, color: Colors.white);
     }
@@ -139,6 +107,7 @@ class _NewsScreenState extends State<NewsScreen> {
 
 }
 
+/// News widget class
 class NewsScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _NewsScreenState();

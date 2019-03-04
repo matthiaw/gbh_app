@@ -15,14 +15,14 @@ import 'package:gbh_app/screens/home.dart';
 import 'package:gbh_app/models/screen.dart';
 
 class RootScreen extends StatefulWidget {
-  //RootPage({this.auth});
-
   List<Screen> screenPages = new List<Screen>();
 
   RootScreen({this.auth}) {
     screenPages.add(new Screen('Nachrichten', 'logo.png', '/news'));
     screenPages.add(new Screen('Deeper', 'deeper.png', '/deeper'));
     screenPages.add(new Screen('Soundcloud', 'soundcloud.png', '/soundcloud'));
+    screenPages.add(new Screen('YouTube', 'youtube.png', '/youtube'));
+    screenPages.add(new Screen('Products', 'products.png', '/products'));
   }
 
   final BaseAuth auth;
