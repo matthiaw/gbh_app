@@ -13,6 +13,7 @@ import 'package:gbh_app/screens/soundcloud.dart';
 import 'package:gbh_app/screens/youtube.dart';
 import 'package:gbh_app/models/theme.dart';
 import 'package:gbh_app/screens/products.dart';
+import 'package:gbh_app/screens/calendar.dart';
 
 /// Main if the application
 void main() => runApp(OpenSkiesApp());
@@ -46,6 +47,8 @@ class OpenSkiesApp extends StatelessWidget {
         '/youtube': (context) => YouTubeScreen(),
         // When we navigate to the "/products" build ProductScreen Widget
         '/products': (context) => ProductScreen(),
+        // When we navigate to the "/calendar" build CalendarScreen Widget
+        '/calendar': (context) => CalendarScreen(),
       },
     );
   }

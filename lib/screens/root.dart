@@ -18,11 +18,12 @@ class RootScreen extends StatefulWidget {
   List<Screen> screenPages = new List<Screen>();
 
   RootScreen({this.auth}) {
-    screenPages.add(new Screen('Nachrichten', 'logo.png', '/news'));
+    screenPages.add(new Screen('Nachrichten', 'news.png', '/news'));
     screenPages.add(new Screen('Deeper', 'deeper.png', '/deeper'));
     screenPages.add(new Screen('Soundcloud', 'soundcloud.png', '/soundcloud'));
     screenPages.add(new Screen('YouTube', 'youtube.png', '/youtube'));
-    screenPages.add(new Screen('Products', 'products.png', '/products'));
+    screenPages.add(new Screen('Produkte', 'products.png', '/products'));
+    screenPages.add(new Screen('Gebetstunden', 'logo.png', '/calendar'));
   }
 
   final BaseAuth auth;

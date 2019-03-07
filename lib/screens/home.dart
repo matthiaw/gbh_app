@@ -55,43 +55,46 @@ class _HomePageState extends State<HomeScreen> {
   } //build
 
   Card createStructuredGridCell(Screen screenItem) {
-    var iconSize = 130.0;
+    var iconSize = 120.0;
     return new Card(
         elevation: 5.0,
         color: Theme.of(context).backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          verticalDirection: VerticalDirection.down,
-          children: <Widget>[
-            new Material(
-                color: Theme.of(context).backgroundColor,
-                child: Ink.image(
-                    image: AssetImage('assets/'+screenItem.icon+''),
-                    fit: BoxFit.scaleDown, width: iconSize, height: iconSize,
-                    child: InkWell (
-                        onTap: () {
-                          Navigator.pushNamed(context, screenItem.path);
-                        }, //onTap
-                    )
-                )
-            ),
-            new Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Text(
-                    screenItem.title,
-                    style: TextStyle(color: Colors.white)
-                  ),
-                ],
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            verticalDirection: VerticalDirection.down,
+            children: <Widget>[
+              new Material(
+                  color: Theme.of(context).backgroundColor,
+                  child: Ink.image(
+                      image: AssetImage('assets/'+screenItem.icon+''),
+                      fit: BoxFit.scaleDown, width: iconSize, height: iconSize,
+                      child: InkWell (
+                          onTap: () {
+                            Navigator.pushNamed(context, screenItem.path);
+                          }, //onTap
+                      )
+                  )
               ),
-            )
-          ],
+              new Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new Text(
+                      screenItem.title,
+                      style: TextStyle(color: Colors.white)
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ));
   }
 
