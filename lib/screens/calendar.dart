@@ -32,7 +32,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     _hourQuery = _database
         .reference()
-        .child('hours');
+        .child('hours')
+        .orderByChild("idOfDay")
+        ;
 
     _hourQuery.onChildAdded.listen(_onEntryAdded);
   }
@@ -41,11 +43,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
   _onEntryAdded(Event event) {
     setState(() {
       Hour h = Hour.fromSnapshot(event.snapshot);
-      _hourList.add(h);
+      if (h.title!="Unbesetzt") {
+        _hourList.add(h);
+      }
     });
   }
 
   Widget _buildNewsItem(BuildContext context, int index) {
+    int starttime = _hourList[index].time;
+    int endtime = _hourList[index].duration + starttime;
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: Card(
@@ -53,8 +59,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
           padding: const EdgeInsets.all(5.0),
           child: Column(
             children: <Widget>[
-              buildAlignedStyledText(context, _hourList[index].title, TextStyle( color: Theme.of(context).accentColor, fontSize: 18, fontWeight: FontWeight.bold)),
-             ],
+              buildAlignedStyledText(context, _hourList[index].nameOfDay + " ${starttime}:00 - ${endtime}:00 Uhr", TextStyle( color: Colors.black, fontSize: 14, fontWeight: FontWeight.normal)),
+           //   buildAlignedStyledText(context, "${time}:00", TextStyle( color: Theme.of(context).accentColor, fontSize: 18, fontWeight: FontWeight.bold)),
+              buildAlignedStyledText(context, _hourList[index].title, TextStyle( color: Theme.of(context).accentColor, fontSize: 28, fontWeight: FontWeight.bold)),
+              buildAlignedStyledText(context, _hourList[index].subtitle, TextStyle( color: Theme.of(context).primaryColor, fontSize: 18, fontWeight: FontWeight.normal)),
+            ],
           ),
         ),
       ),
