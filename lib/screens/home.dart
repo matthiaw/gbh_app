@@ -18,13 +18,15 @@ class HomeScreen extends StatefulWidget {
   final String title;
 
   @override
-  _HomePageState createState() => _HomePageState(screens);
+  _HomePageState createState() => _HomePageState(screens, userId);
 
 }
 
 class _HomePageState extends State<HomeScreen> {
 
-  _HomePageState(this.screens);
+  String userId;
+
+  _HomePageState(this.screens, this.userId);
 
   final List<Screen> screens;
 
@@ -46,7 +48,9 @@ class _HomePageState extends State<HomeScreen> {
           crossAxisCount: 2,
             // Generate Widgets that display their index in the List
           children: List.generate(screens.length, (index) {
-            return createStructuredGridCell(screens[index]);
+            Screen screen = screens[index];
+            screen.userId = userId;
+            return createStructuredGridCell(screen);
           }),
         ),
       ),
@@ -55,7 +59,7 @@ class _HomePageState extends State<HomeScreen> {
   } //build
 
   Card createStructuredGridCell(Screen screenItem) {
-    var iconSize = 120.0;
+    var iconSize = 80.0;
     return new Card(
         elevation: 5.0,
         color: Theme.of(context).backgroundColor,
@@ -63,7 +67,7 @@ class _HomePageState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(30.0),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
