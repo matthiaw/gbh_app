@@ -2,15 +2,18 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:gbh_app/models/user.dart';
 import 'package:gbh_app/models/news.dart';
+import 'package:gbh_app/models/hour.dart';
 
 // Source from https://www.developerlibs.com/2018/11/flutter-firebase-realtime-database-crud.html
 class FirebaseDatabaseUtil {
   DatabaseReference _userRef;
   DatabaseReference _newsRef;
+  DatabaseReference _hourRef;
 
-  FirebaseDatabase database = new FirebaseDatabase();
+  FirebaseDatabase _database = new FirebaseDatabase();
 
   Query _newsQuery;
+  Query _hourQuery;
 
   // Singleton database util
   static final FirebaseDatabaseUtil _instance = new FirebaseDatabaseUtil.internal();
@@ -22,16 +25,46 @@ class FirebaseDatabaseUtil {
   }
 
   void initState() {
-    _userRef = database.reference().child('users');
-    database.setPersistenceEnabled(true);
-    database.setPersistenceCacheSizeBytes(10000000);
+    print("Initialize util for database");
 
-    _newsQuery = database
-        .reference()
-        .child('news')
-        .orderByChild('published')
-        .limitToFirst(10);
+    _userRef = _database.reference().child('users');
+    _newsRef = _database.reference().child('news');
+    _hourRef = _database.reference().child('hours');
 
+    _database.setPersistenceEnabled(true);
+    _database.setPersistenceCacheSizeBytes(10000000);
+
+    _newsQuery = _newsRef.orderByChild('published').limitToFirst(10);
+    _hourQuery = _hourRef.orderByChild("idOfDay");
+
+  }
+
+  Future<List<Hour>> loadHours() async {
+    Completer c = new Completer<List<Hour>>();
+    List<Hour> list = new List<Hour>();
+    Stream<Event> sse = _hourQuery.onChildAdded;
+
+    sse.listen((Event event) {
+      onHourAdded(event, list).then((List<Hour> hourList) {
+        return new Future.delayed(new Duration(seconds: 0), ()=> hourList);
+      }).then((_) {
+        if (!c.isCompleted) {
+          c.complete(list);
+        }
+      });
+    });
+
+    return c.future;
+  }
+
+  Future<List<Hour>> onHourAdded(Event event, List<Hour> hourList) async {
+    Hour h = Hour.fromSnapshot(event.snapshot);
+    //print("ADD: "+n.title);
+    if (h.title!="Unbesetzt") {
+      hourList.add(h);
+    }
+
+    return hourList;
   }
 
   Future<List<News>> loadNews() async {
@@ -60,7 +93,7 @@ class FirebaseDatabaseUtil {
   }
 
   Future<User> loadUser(String userId) async {
-    print("Try loading user with id $userId");
+    print("Try loading data for user with id '$userId'");
     return await getUserReference().child(userId).once().then((DataSnapshot snapshot) {
       User user = User.fromSnapshot(snapshot);
       //print(user.toJson());

@@ -5,14 +5,10 @@
 // All rights reserved. Use of this source code is governed by GNU General Public License v3.0
 
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:gbh_app/models/hour.dart';
 import 'package:gbh_app/widgets/textwidgets.dart';
-import 'package:gbh_app/utils/objectutils.dart';
+import 'package:gbh_app/utils/databaseutil.dart';
 
-/// News screen state class
 class _CalendarScreenState extends State<CalendarScreen> {
 
   String _dropdownValue = 'Woche';
@@ -21,34 +17,29 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<Hour> _selectionList;
 
-  // Query of firebase realtime database (not firestore)
-  Query _hourQuery;
-
   // Firebase database
-  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  FirebaseDatabaseUtil databaseUtil;
 
   //initial state of widget
   @override
   void initState() {
     super.initState();
 
+    databaseUtil = new FirebaseDatabaseUtil();
+
     _hourList = new List();
     _selectionList = new List();
 
-    _hourQuery = _database
-        .reference()
-        .child('hours')
-        .orderByChild("idOfDay");
-
-    _hourQuery.onChildAdded.listen(_onEntryAdded);
-
-    //_onSelection();
-
+    databaseUtil.loadHours().then((List<Hour> hourList) {
+      setState(() {
+        _hourList = hourList;
+        _selectionList = hourList;
+      });
+    });
   }
 
   _onSelection() {
     _selectionList = new List();
- //   print(_dropdownValue);
       for(var item in _hourList) {
            if (_dropdownValue=="Woche") {
               _selectionList.add(item);
@@ -56,18 +47,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
              _selectionList.add(item);
            }
       }
-//print(_selectionList.length);
-  }
-
-  /// Create and add News-Class to list from json-data-snapshot
-  _onEntryAdded(Event event) {
-    setState(() {
-      Hour h = Hour.fromSnapshot(event.snapshot);
-      if (h.title!="Unbesetzt") {
-        _hourList.add(h);
-        _selectionList.add(h);
-      }
-    });
   }
 
   Widget _buildHourItem(BuildContext context, int index) {
@@ -98,17 +77,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-  /* return ExpansionTile(
-      title: Text("Expansion "),
-      children: _hourList
-          .map((data) => ListTile(
-        leading: Icon(Icons.person),
-        title: Text(data.title),
-        subtitle: Text("a subtitle here"),
-      ))
-          .toList(),
-    );*/
 
     if (_hourList.length > 0) {
       var i = _selectionList.length;

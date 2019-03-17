@@ -5,8 +5,6 @@
 // All rights reserved. Use of this source code is governed by GNU General Public License v3.0
 
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:gbh_app/models/news.dart';
 import 'package:gbh_app/widgets/textwidgets.dart';
 import 'package:gbh_app/utils/objectutils.dart';

@@ -13,9 +13,7 @@ import 'package:gbh_app/screens/login.dart';
 import 'package:gbh_app/services/authentication.dart';
 import 'package:gbh_app/screens/home.dart';
 import 'package:gbh_app/models/screen.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:gbh_app/utils/databaseutil.dart';
-import 'package:gbh_app/models/user.dart';
 
 class RootScreen extends StatefulWidget {
   List<Screen> screenPages = new List<Screen>();
@@ -63,10 +61,7 @@ class _RootPageState extends State<RootScreen> {
         if (user != null) {
           _userId = user?.uid;
 
-          print("Logged in: "+_userId);
-          databaseUtil.loadUser(_userId).then((User user) {
-            print(user.toJson());
-          });
+          print("User logged in: "+_userId);
         }
         authStatus =
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
