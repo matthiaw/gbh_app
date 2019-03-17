@@ -10,6 +10,9 @@
 
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:gbh_app/models/user.dart';
+
 
 /// Abstract class for simple basic authentification
 abstract class BaseAuth {
@@ -30,10 +33,44 @@ abstract class BaseAuth {
 
   // Method to check if e-mail is verified
   Future<bool> isEmailVerified();
+
+  //User getUser(String userId);
+
+  //addUser(String userId);
 }
 
 /// Class for authenticate with firebase
 class Auth implements BaseAuth {
+
+  // Query of firebase realtime database (not firestore)
+  //Query _query;
+
+  //User user;
+
+  // Firebase database
+  //final FirebaseDatabase _database = FirebaseDatabase.instance;
+
+  /// Create and add News-Class to list from json-data-snapshot
+  //_onEntry(Event event) {
+   //   user = User.fromSnapshot(event.snapshot);
+   //}
+
+   //addUser(String userId) {
+   //  User user = new User(userId, null, null, null);
+   //  user.key = userId;
+   //  _database.reference().child("users").push().set(user.toJson());
+   //}
+
+  //User getUser(String userId) {
+  //  _query = _database
+  //      .reference()
+  //      .child('users')
+  //      .equalTo(userId);
+
+  //  _query.onChildAdded.listen(_onEntry);
+
+   // return user;
+  //}
 
   /// final instance of firebase-authentification
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;

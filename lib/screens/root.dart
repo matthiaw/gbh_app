@@ -13,17 +13,21 @@ import 'package:gbh_app/screens/login.dart';
 import 'package:gbh_app/services/authentication.dart';
 import 'package:gbh_app/screens/home.dart';
 import 'package:gbh_app/models/screen.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:gbh_app/utils/databaseutil.dart';
+import 'package:gbh_app/models/user.dart';
 
 class RootScreen extends StatefulWidget {
   List<Screen> screenPages = new List<Screen>();
 
   RootScreen({this.auth}) {
-    screenPages.add(new Screen('Nachrichten', 'news.png', '/news', null));
-    screenPages.add(new Screen('Deeper', 'deeper.png', '/deeper', null));
-    screenPages.add(new Screen('Soundcloud', 'soundcloud.png', '/soundcloud', null));
-    screenPages.add(new Screen('YouTube', 'youtube.png', '/youtube', null));
-    screenPages.add(new Screen('Produkte', 'products.png', '/products', null));
-    screenPages.add(new Screen('Gebetstunden', 'logo.png', '/calendar', null));
+    screenPages.add(new Screen('Nachrichten', 'news.png', '/news'));
+    screenPages.add(new Screen('Deeper', 'deeper.png', '/deeper'));
+    screenPages.add(new Screen('Soundcloud', 'soundcloud.png', '/soundcloud'));
+    screenPages.add(new Screen('YouTube', 'youtube.png', '/youtube'));
+    screenPages.add(new Screen('Produkte', 'products.png', '/products'));
+    screenPages.add(new Screen('Gebetstunden', 'logo.png', '/calendar'));
+    screenPages.add(new Screen('User', 'logo.png', '/user'));
   }
 
   final BaseAuth auth;
@@ -39,6 +43,9 @@ enum AuthStatus {
 }
 
 class _RootPageState extends State<RootScreen> {
+
+  FirebaseDatabaseUtil databaseUtil;
+
   _RootPageState(this.screens);
 
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
@@ -48,15 +55,24 @@ class _RootPageState extends State<RootScreen> {
   @override
   void initState() {
     super.initState();
+    databaseUtil = new FirebaseDatabaseUtil();
+    databaseUtil.initState();
+
     widget.auth.getCurrentUser().then((user) {
       setState(() {
         if (user != null) {
           _userId = user?.uid;
+
+          print("Logged in: "+_userId);
+          databaseUtil.loadUser(_userId).then((User user) {
+            print(user.toJson());
+          });
         }
         authStatus =
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
       });
     });
+
   }
 
   void _onLoggedIn() {

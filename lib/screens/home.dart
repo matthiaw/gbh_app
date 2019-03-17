@@ -45,11 +45,10 @@ class _HomePageState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: GridView.count(
-          crossAxisCount: 2,
+          crossAxisCount: 3,
             // Generate Widgets that display their index in the List
           children: List.generate(screens.length, (index) {
             Screen screen = screens[index];
-            screen.userId = userId;
             return createStructuredGridCell(screen);
           }),
         ),
@@ -59,7 +58,7 @@ class _HomePageState extends State<HomeScreen> {
   } //build
 
   Card createStructuredGridCell(Screen screenItem) {
-    var iconSize = 80.0;
+    var iconSize = 60.0;
     return new Card(
         elevation: 5.0,
         color: Theme.of(context).backgroundColor,
@@ -67,20 +66,20 @@ class _HomePageState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(10.0),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             verticalDirection: VerticalDirection.down,
             children: <Widget>[
-              new Material(
+          new Material(
                   color: Theme.of(context).backgroundColor,
                   child: Ink.image(
                       image: AssetImage('assets/'+screenItem.icon+''),
                       fit: BoxFit.scaleDown, width: iconSize, height: iconSize,
                       child: InkWell (
                           onTap: () {
-                            Navigator.pushNamed(context, screenItem.path);
+                            Navigator.pushNamed(context, screenItem.path, arguments: userId);
                           }, //onTap
                       )
                   )

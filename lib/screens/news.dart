@@ -6,11 +6,11 @@
 
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:gbh_app/models/news.dart';
 import 'package:gbh_app/widgets/textwidgets.dart';
 import 'package:gbh_app/utils/objectutils.dart';
+import 'package:gbh_app/utils/databaseutil.dart';
 
 /// News screen state class
 class _NewsScreenState extends State<NewsScreen> {
@@ -18,33 +18,22 @@ class _NewsScreenState extends State<NewsScreen> {
   /// List of news
   List<News> _newsList;
 
-  // Query of firebase realtime database (not firestore)
-  Query _newsQuery;
-
   // Firebase database
-  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  FirebaseDatabaseUtil databaseUtil;
 
   //initial state of widget
   @override
   void initState() {
     super.initState();
 
+    databaseUtil = new FirebaseDatabaseUtil();
+
     _newsList = new List();
 
-    _newsQuery = _database
-        .reference()
-        .child('news')
-        .orderByChild('published')
-        .limitToFirst(10);
-
-    _newsQuery.onChildAdded.listen(_onEntryAdded);
-  }
-
-  /// Create and add News-Class to list from json-data-snapshot
-  _onEntryAdded(Event event) {
-    setState(() {
-      News n = News.fromSnapshot(event.snapshot);
-      _newsList.add(n);
+    databaseUtil.loadNews().then((List<News> newsList) {
+      setState(() {
+        _newsList = newsList;
+      });
     });
   }
 

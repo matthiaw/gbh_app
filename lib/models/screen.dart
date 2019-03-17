@@ -7,8 +7,6 @@
 /// Small class to define screens with icon and navigation path which are accessible from homescreen
 class Screen {
 
-  String userId;
-
   // title of screen. Is used as bootom text under icon
   String title;
 
@@ -19,6 +17,6 @@ class Screen {
   String path;
 
   // Constructor of screen.
-  Screen(this.title, this.icon, this.path, this.userId);
+  Screen(this.title, this.icon, this.path);
 
 }

@@ -14,6 +14,7 @@ import 'package:gbh_app/screens/youtube.dart';
 import 'package:gbh_app/models/theme.dart';
 import 'package:gbh_app/screens/products.dart';
 import 'package:gbh_app/screens/calendar.dart';
+import 'package:gbh_app/screens/user.dart';
 
 /// Main if the application
 void main() => runApp(OpenSkiesApp());
@@ -24,6 +25,8 @@ class OpenSkiesApp extends StatelessWidget {
   // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
+
+    BaseAuth auth = new Auth();
 
     // returns widget
     return MaterialApp(
@@ -36,7 +39,7 @@ class OpenSkiesApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // When we navigate to the "/" route, build the RootScreen Widget
-        '/': (context) => RootScreen(auth: new Auth()),
+        '/': (context) => RootScreen(auth: auth),
         // When we navigate to the "/news" build NewsScreen Widget
         '/news': (context) => NewsScreen(),
         // When we navigate to the "/deeper" build DeeperScreen Widget
@@ -49,6 +52,8 @@ class OpenSkiesApp extends StatelessWidget {
         '/products': (context) => ProductScreen(),
         // When we navigate to the "/calendar" build CalendarScreen Widget
         '/calendar': (context) => CalendarScreen(),
+        // When we navigate to the "/calendar" build UserScreen Widget
+        '/user': (context) => UserScreen(auth: auth),
       },
     );
   }
