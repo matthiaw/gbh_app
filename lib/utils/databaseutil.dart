@@ -98,7 +98,12 @@ class FirebaseDatabaseUtil {
       User user = User.fromSnapshot(snapshot);
       //print(user.toJson());
       return user;
-    });
+    }).catchError((error) {
+          // if no user in db exists in users-folder, then return empty user to app
+          User user = User(userId, "", "", "");
+          return user;
+       }
+    );
   }
 
   DatabaseReference getUserReference() {
@@ -123,11 +128,11 @@ class FirebaseDatabaseUtil {
 
   void updateUser(User user) async {
     await _userRef.child(user.id).update({
-      "firstname": "" + user.firstname,
-      "familyname": "" + user.familyname,
-      "group": "" + user.group,
+      "firstname": "${user.firstname}",
+      "familyname": "${user.familyname}",
+      "group": "${user.group}",
     }).then((_) {
-      print('Transaction  committed.');
+      print('Transaction  committed for user ${user.id}');
     });
   }
 }

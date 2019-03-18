@@ -25,7 +25,7 @@ class RootScreen extends StatefulWidget {
     screenPages.add(new Screen('YouTube', 'youtube.png', '/youtube'));
     screenPages.add(new Screen('Produkte', 'products.png', '/products'));
     screenPages.add(new Screen('Gebetstunden', 'logo.png', '/calendar'));
-    screenPages.add(new Screen('User', 'logo.png', '/user'));
+    screenPages.add(new Screen('User', 'user.png', '/user'));
   }
 
   final BaseAuth auth;
